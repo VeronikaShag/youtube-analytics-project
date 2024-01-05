@@ -10,7 +10,6 @@ class Channel:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
         self.__channel_id = channel_id
 
-
         channel = self.get_service().channels().list(id=self.__channel_id, part='snippet,statistics').execute()
 
         self.title = channel['items'][0]["snippet"]["title"]
@@ -18,8 +17,10 @@ class Channel:
         self.video_count = channel['items'][0]["statistics"]["videoCount"]
         self.url = f'https://www.youtube.com/channel/{self.__channel_id}'
         self.view_count = channel['items'][0]["statistics"]["viewCount"]
-        self.subscriberCount = channel['items'][0]["statistics"]["subscriberCount"]
+        self.subscriberCount = int(channel['items'][0]["statistics"]["subscriberCount"])
 
+    def __str__(self):
+        return f'{self.title} ({self.url})'
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
@@ -52,3 +53,21 @@ class Channel:
         }
         with open(filename, 'w') as f:
             json.dump(data, f)
+
+    def __add__(self, other):
+        return self.subscriberCount + other.subscriberCount
+
+    def __sub__(self, other):
+        return self.subscriberCount - other.subscriberCount
+
+    def __gt__(self, other):
+        return self.subscriberCount > other.subscriberCount
+
+    def __ge__(self, other):
+        return self.subscriberCount >= other.subscriberCount
+
+    def __lt__(self, other):
+        return self.subscriberCount < other.subscriberCount
+
+    def __le__(self, other):
+        return self.subscriberCount <= other.subscriberCount
