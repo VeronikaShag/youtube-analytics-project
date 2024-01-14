@@ -7,7 +7,19 @@ from googleapiclient.discovery import build
 from src.channel import Channel
 
 
-class PlayList(Channel):
+class APIMixin:
+    """Класс-миксин для предоставления доступа к API."""
+
+    __API_KEY: str = os.getenv('YT_API_KEY')
+
+    @classmethod
+    def get_service(cls) -> build:
+        """Возвращает объект для работы с API youtube."""
+        service = build('youtube', 'v3', developerKey=cls.__API_KEY)
+        return service
+
+
+class PlayList(Channel, APIMixin):
 
     def __init__(self, playlist_id: str):
         self.__playlist_id = playlist_id

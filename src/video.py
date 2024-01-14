@@ -1,7 +1,8 @@
 from src.channel import Channel
+from src.playlist import APIMixin
 
 
-class Video(Channel):
+class Video(Channel, APIMixin):
     """Класс для ютуб-видео"""
 
     def __init__(self, video_id: str) -> None:
