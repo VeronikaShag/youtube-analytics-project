@@ -13,11 +13,24 @@ class Video(Channel, APIMixin):
                                                           id=self.__video_id
                                                           ).execute()
 
-        self.video_title: str = video_response['items'][0]['snippet']['title']
-        self.url: str = f'https://www.youtube.com/channel/{self.__video_id}'
-        self.view_count: int = video_response['items'][0]['statistics']['viewCount']
-        self.like_count: int = video_response['items'][0]['statistics']['likeCount']
-        self.comment_count: int = video_response['items'][0]['statistics']['commentCount']
+        try:
+            self.video_title: str = video_response['items'][0]['snippet']['title']
+            self.url: str = f'https://www.youtube.com/channel/{self.__video_id}'
+            self.view_count: int = video_response['items'][0]['statistics']['viewCount']
+            self.like_count: int = video_response['items'][0]['statistics']['likeCount']
+            self.comment_count: int = video_response['items'][0]['statistics']['commentCount']
+        except Exception:
+            self.video_title = None
+            self.url = None
+            self.view_count = None
+            self.like_count = None
+            self.comment_count = None
+        else:
+            self.video_title: str = video_response['items'][0]['snippet']['title']
+            self.url: str = f'https://www.youtube.com/channel/{self.__video_id}'
+            self.view_count: int = video_response['items'][0]['statistics']['viewCount']
+            self.like_count: int = video_response['items'][0]['statistics']['likeCount']
+            self.comment_count: int = video_response['items'][0]['statistics']['commentCount']
 
     def __str__(self):
         return self.video_title
